@@ -59,20 +59,20 @@ jobs:
             const newVersion = semver.inc(`${packageJson.version}.0`, "minor").replace(".0", "");
             packageJson.version = newVersion;
             fs.writeFileSync("./package.json", JSON.stringify(packageJson, null, 2) + "\n");
-      
+            
             // Configure Git
             await exec.exec("git", ["config", "--global", "user.name", "GitHub Action"]);
             await exec.exec("git", ["config", "--global", "user.email", "action@github.com"]);
-      
+            
             // Add files
             await exec.exec("git", ["add", "."]);
-      
+            
             // Commit
             const commitMessage = "chore: release v" + newVersion;
             await exec.exec("git", ["commit", "-m", commitMessage]);
 
             // Tag
             await exec.exec("git", ["tag", "-a", "-m", "Release v" + newVersion, "v" + newVersion]);
-      
+            
             // Push
             await exec.exec("git", ["push", "--follow-tags"]);
