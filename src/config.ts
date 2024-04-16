@@ -6,9 +6,14 @@ const configSchema = z.object({
   name: z.string(),
 });
 
+function getActionInputValue(name: string) {
+  const inputValue = getInput(name);
+  return inputValue.length ? inputValue : undefined;
+}
+
 function parseConfig() {
   return configSchema.parse({
-    name: getInput("name", { required: true }),
+    name: getActionInputValue("name"),
   });
 }
 
